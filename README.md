@@ -1,6 +1,6 @@
 ## Reto Final
 
-Se realizó tres diferentes pruebas automatizadas en la página de https://www.haceb.com las cuales son:
+Se realizó tres diferentes pruebas automatizadas con ScreenPlay en la página de https://www.haceb.com las cuales son:
 
 - Realizar una busqueda de 5 productos diferentes pormedio de un scenario outline
 - Realizar una busqueda con dos scenarios los cuales tendrian una precondición utilizando un Background
@@ -22,34 +22,49 @@ apply plugin: 'eclipse'
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
+
 
 }
 
 buildscript {
     repositories {
         mavenLocal()
-        mavenCentral()
-        jcenter()
+        mavenCentral()// https://mvnrepository.com/artifact/io.cucumber/cucumber-jvm-deps
+
+
+
 
     }
     dependencies {
         classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.80")
+
     }
 }
 
 dependencies {
     implementation 'net.serenity-bdd:serenity-junit:2.0.80'
+
     implementation 'net.serenity-bdd:serenity-cucumber:1.9.45'
     implementation 'net.serenity-bdd:serenity-core:2.0.80'
     implementation 'org.slf4j:slf4j-simple:1.7.7'
     implementation group: 'org.apache.poi', name: 'poi', version: '3.17'
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+// https://mvnrepository.com/artifact/cglib/cglib-nodep
+    implementation group: 'cglib', name: 'cglib-nodep', version: '3.3.0'
+
+// https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream
+    implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.18'
+    implementation 'info.cukes:cucumber-jvm-deps:1.0.5'
+
+
+
+
 }
 
 test {
     ignoreFailures = true
 }
+
 gradle.startParameter.continueOnFailure = true
 ```
 
@@ -68,146 +83,90 @@ public class GoogleChromeDriver {
 
     public static WebDriver driver;
 
-    public static void chromeWebDriver(String url){
+    public static  GoogleChromeDriver chromeHisBrowserWeb() {
+
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-infobars");
+
         driver = new ChromeDriver(options);
+        return new GoogleChromeDriver();
+
+    }
+
+    public  WebDriver on(String url) {
         driver.get(url);
+        return driver;
     }
-}
-```
-
-#### Paquete pages
-
-El paquete pages contiene la clase HacebPages la cual nos ayuda a definir nuestros Xpath, estos Xpath son la dirección de los elementos que se encuentran en la página, los cuales necesitamos para realizar la prueba; también encontraremos nuestros set y get, quienes nos ayudan a llevar y traer nuestros Xpath.
-
-```java
-package pages;
-
-import org.openqa.selenium.By;
-
-public class HacebPages {
-
-
-    By txtBuscador = By.xpath("//input[@placeholder='¿Buscas un producto en especial?']");
-    By btnBuscador = By.xpath("//button[@class='btn btn-search']");
-    By btnElementoBusqueda;
-    By txtElementoBusqueda;
-
-
-    public By getTxtBuscador() {
-        return txtBuscador;
-    }
-
-    public By getBtnBuscador() {
-        return btnBuscador;
-    }
-
-    public By getBtnElementoBusqueda() {
-        return btnElementoBusqueda;
-    }
-
-    public By getTxtElementoBusqueda() {
-        return txtElementoBusqueda;
-    }
-
-    public void setBtnElementoBusqueda(String producto) {
-        this.btnElementoBusqueda = By.xpath("//div[@class='shelve__item' and @data-name='"+producto+"']");
-    }
-
-
-    public void setTxtElementoBusqueda(String producto) {
-        this.txtElementoBusqueda = By.xpath("//div[@class='column']//h1[contains(text(),'"+producto+"')]");
-    }
-
-
-}
-```
-
-#### Paquete steps
-
-El paquete steps posee la clase HacebSteps, esta clase contiene los métodos que se van a ejecutar dentro del código para que la automatización funcione de manera correcta.
-
-```java
-package steps;
-
-import drivers.GoogleChromeDriver;
-import org.junit.Assert;
-import org.openqa.selenium.By;
-import pages.HacebPages;
-
-public class HacebSteps {
-
-    HacebPages hacebpages = new HacebPages();
-
-    public void abrirPagina(){GoogleChromeDriver.chromeWebDriver("https://www.haceb.com/");}
-
-    public void buscarElementoEnHaceb(String producto){
-        GoogleChromeDriver.driver.findElement(hacebpages.getTxtBuscador()).sendKeys(producto);
-        GoogleChromeDriver.driver.findElement(hacebpages.getBtnBuscador()).click();
-        hacebpages.setBtnElementoBusqueda(producto);
-        GoogleChromeDriver.driver.findElement(hacebpages.getBtnElementoBusqueda()).click();
-    }
-
-    public void buscarElementoEnHacebs(String productos)  {
-        try {
-            escribirEnTexto(hacebpages.getTxtBuscador(), productos);
-            Thread.sleep(1000);
-            clicEnElemento(hacebpages.getBtnBuscador());
-            Thread.sleep(1000);
-            hacebpages.setBtnElementoBusqueda(productos);
-            Thread.sleep(1000);
-            clicEnElemento(hacebpages.getBtnElementoBusqueda());
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
-    public void validarElementoEnPantalla(String producto){
-        hacebpages.setTxtElementoBusqueda(producto);
-        Assert.assertEquals(producto.replace("  "," "),GoogleChromeDriver.driver.findElement(hacebpages.getTxtElementoBusqueda()).getText());
-        GoogleChromeDriver.driver.quit();
-    }
-
-
-
-    public void escribirEnTexto(By elemento, String texto) {GoogleChromeDriver.driver.findElement(elemento).sendKeys(texto);}
-
-    public void clicEnElemento(By elemento) {GoogleChromeDriver.driver.findElement(elemento).click();}
-
 
 }
 
 ```
 
-En esta clase  ***HacebSteps***  utilice un hilo para dejar que la pagina se tomara un segundo de espera y pueda terminar de cargar la información.
-```
+#### Paquete uis
+
+El paquete uis contiene la clase HacebPages la cual nos ayuda a definir nuestros Xpath, estos Xpath son la dirección de los elementos que se encuentran en la página, los cuales necesitamos para realizar la prueba; también encontraremos nuestros set y get, quienes nos ayudan a llevar y traer nuestros Xpath.
 
 ```java
- public void buscarElementoEnHacebs(String productos)  {
-        try {
-            escribirEnTexto(hacebPages.getTxtBuscador(), productos);
-            Thread.sleep(1000);
-            clicEnElemento(hacebPages.getBtnBuscador());
-            Thread.sleep(1000);
-            hacebPages.setBtnElementoBusqueda(productos);
-            Thread.sleep(1000);
-            clicEnElemento(hacebPages.getBtnElementoBusqueda());
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+package uis;
 
+import net.serenitybdd.screenplay.targets.Target;
+
+
+public class HacebPages{
+
+ public static final Target TXT_BUSCADOR = Target.the("").locatedBy("//input[@placeholder='¿Buscas un producto en especial?']");
+    public static final Target BTN_BUSCADOR = Target.the("").locatedBy("//button[@class='btn btn-search']");
+    public static final Target BTN_ELEMENTO_BUSQUEDA = Target.the("").locatedBy("//div[@class='shelve__item' and @data-name='{0}']");
+    public static final Target TXT_ELEMENTO_BUSQUEDA = Target.the("").locatedBy("//div[@class='column']//h1[contains(text(),'{0}')]");
+}
+
+```
+
+#### Paquete task
+
+El paquete task posee la clase HacebSteps, esta clase contiene los métodos que se van a ejecutar dentro del código para que la automatización funcione de manera correcta.
+
+```java
+package task;
+
+
+import net.serenitybdd.core.steps.Instrumented;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.actions.Enter;
+import uis.HacebPages;
+
+public class HacebBuscar implements Task {
+
+    private  String producto;
+
+    public HacebBuscar(String producto) {
+        this.producto = producto;
+    }
+    @Override
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(
+                Enter.theValue(producto).into(HacebPages.TXT_BUSCADOR),
+                Click.on(HacebPages.BTN_BUSCADOR),
+                Click.on(HacebPages.BTN_ELEMENTO_BUSQUEDA.of(producto))
+
+        );
     }
 
+    public static HacebBuscar EnHaceb (String producto){
+
+        return Instrumented.instanceOf(HacebBuscar.class).withProperties(producto);
+    }
+}
+
 ```
-```
+
+
+
 
 #### Paquete runners
 
@@ -297,11 +256,9 @@ En el paquete llamado stepDefinitios utilizamos tres clases diferentes llamadas:
 
 Estas clases definen el paso a paso de lo que se va a hacer dentro de la automatización en la página web con ayuda de las diferentes clases, las cuales contienen los parametros ***Given, When y Then***  y estos tambien se pueden encontrar en un lenguaje mucho más sencillo en el directorio llamado feature.
 
-A estas clases se les hace una extension de la clase ***HacebSteps*** para poder utilizar los metodos que se encunetran en esta clase y asi ayudar al funcionamiento de la automatización.
+Cada clase contiene un ***Actor*** el cual ayuda a que la simulación de las pruebas se acerque mas a las acciones manuales de una persona.
 
-
-***HacebSteps hacebsteps = new HacebSteps();***
-
+Actor actor = new Actor("Juan");
 
 - HacebBackgroundStepDefinition
   Contiene los paso a paso del archivo ***HacebBackground.feature***.
@@ -310,10 +267,20 @@ A estas clases se les hace una extension de la clase ***HacebSteps*** para poder
 package stepsDefinitions;
 
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import steps.HacebSteps;
+import drivers.GoogleChromeDriver;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.GivenWhenThen;
+import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
+import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import task.HacebBuscar;
+import uis.HacebPages;
 
 import java.util.List;
 
@@ -322,85 +289,127 @@ public class HacebBackgroundStepDefinition {
 
 
 
-    HacebSteps hacebsteps = new HacebSteps();
+    Actor actor = new Actor("Juan");
+
+    @Before
+    public void before(){
+        OnStage.setTheStage(new OnlineCast());
+    }
 
     @Given("^que el usuario ingreso a la pagina$")
     public void queElUsuarioIngresoALaPagina() {
-       hacebsteps.abrirPagina();
+        actor.can(BrowseTheWeb.with(GoogleChromeDriver.chromeHisBrowserWeb().on("https://www.haceb.com/")));
     }
 
 
     @When("^ecuentre el producto$")
     public void ecuentreElProducto(List<String>Productos) {
-      hacebsteps.buscarElementoEnHacebs(Productos.get(0));
+        actor.attemptsTo(HacebBuscar.EnHaceb(Productos.get(0)));
 
     }
 
     @Then("^podre mirar (.*) en pantalla$")
     public void podreMirarEnPantalla(List<String>Productos) {
-    hacebsteps.validarElementoEnPantalla(Productos.get(0));
+        actor.should(GivenWhenThen.seeThat(WebElementQuestion.the(HacebPages.TXT_ELEMENTO_BUSQUEDA.of(Productos.get(0))), WebElementStateMatchers.containsText(Productos.get(0))));
     }
 
 }
+
 
 ```
 
 - HacebFallidoExitosoStepDefinition
 
 Contiene los paso a paso del archivo ***HacebFallidoExitoso.feature***.
+
 ```java
 package stepsDefinitions;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import steps.HacebSteps;
+import drivers.GoogleChromeDriver;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.GivenWhenThen;
+import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
+import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import task.HacebBuscar;
+import uis.HacebPages;
 
 import java.util.List;
 
 public class HacebFallidoExitosoStepDefinition {
 
+    Actor actor = new Actor("Juan");
 
-    HacebSteps hacebsteps = new HacebSteps();
+    @Before
+    public void before(){
+        OnStage.setTheStage(new OnlineCast());
+    }
 
     @Given("^que navegue en la pagina de Haceb$")
-    public void queNavegueEnLaPaginaDeHaceb() {hacebsteps.abrirPagina();}
+    public void queNavegueEnLaPaginaDeHaceb() { actor.can(BrowseTheWeb.with(GoogleChromeDriver.chromeHisBrowserWeb().on("https://www.haceb.com/")));}
 
 
     @When("^halle los productos$")
-    public void halleLosProductos(List<String>Productos) {hacebsteps.buscarElementoEnHacebs(Productos.get(0));}
+    public void halleLosProductos(List<String>Productos) { actor.attemptsTo(HacebBuscar.EnHaceb(Productos.get(0)));}
 
     @Then("^podre observar en pantalla$")
-    public void podreObservarEnPantalla(List<String>Productos) {hacebsteps.validarElementoEnPantalla(Productos.get(0));}
+    public void podreObservarEnPantalla(List<String>Productos) {
+        actor.should(GivenWhenThen.seeThat(WebElementQuestion.the(HacebPages.TXT_ELEMENTO_BUSQUEDA.of(Productos.get(0))), WebElementStateMatchers.containsText(Productos.get(0))));
+    }
 
 }
+
 
 ```
 
 - HacebStepDefinition
 
 Contiene los paso a paso del archivo ***Haceb.feature***.
+
 ```java
 package stepsDefinitions;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
-import steps.HacebSteps;
+import drivers.GoogleChromeDriver;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.GivenWhenThen;
+import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
+import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import task.HacebBuscar;
+import uis.HacebPages;
 
 public class HacebStepDefinition {
 
-    HacebSteps hacebsteps = new HacebSteps();
+
+    Actor actor = new Actor("Juan");
+
+
+    @Before
+    public void before(){
+        OnStage.setTheStage(new OnlineCast());
+    }
 
     @Given("^que me encuentro en la pagina de Haceb$")
-    public void queMeEncuentroEnLaPaginaDeHaceb() {hacebsteps.abrirPagina();}
+    public void queMeEncuentroEnLaPaginaDeHaceb() {actor.can(BrowseTheWeb.with(GoogleChromeDriver.chromeHisBrowserWeb().on("https://www.haceb.com/")));}
 
     @When("^busque el producto (.*)$")
     public void busqueElProductoNeveraHimalayaNoFrost404LitrosPanelDigitalTouchInox(String producto) {
-        hacebsteps.buscarElementoEnHacebs(producto);
+        actor.attemptsTo(HacebBuscar.EnHaceb(producto));
     }
 
     @Then("^podre ver (.*) en pantalla$")
     public void podreVerNeveraHimalayaNoFrost404LitrosPanelDigitalTouchInoxEnPantalla(String producto) {
-        hacebsteps.validarElementoEnPantalla(producto);
+        actor.should(GivenWhenThen.seeThat(WebElementQuestion.the(HacebPages.TXT_ELEMENTO_BUSQUEDA.of(producto)), WebElementStateMatchers.containsText(producto)));
 
     }
 

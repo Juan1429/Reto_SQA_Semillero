@@ -1,4 +1,4 @@
-Feature: HU-001 Buscador Haceb
+Feature: HU-003 Buscador Haceb
   Yo como usuario de Haceb
   Quiero buscar un producto en la plataforma
   Para ver el nombre del producto en pantalla
@@ -15,6 +15,6 @@ Feature: HU-001 Buscador Haceb
   Scenario: Busqueda Fallida
     Given que navegue en la pagina de Haceb
     When halle los productos
-      |Nevera Himalaya No Frost 448 Litros - Titanio|
+      |Nevera Himalaya No Frost 700 Litros - Titanio|
     Then podre observar en pantalla
-      |Nevera Himalaya No Frost 448 Litros - Titanio|
+      |Nevera Himalaya No Frost 700 Litros - Titanio|

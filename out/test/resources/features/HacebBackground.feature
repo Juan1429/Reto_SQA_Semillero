@@ -1,4 +1,4 @@
-Feature: HU-001 Buscador HacebBackground
+Feature: HU-002 Buscador HacebBackground
   Yo como usuario de Haceb
   Quiero buscar un producto en la plataforma
   Para ver el nombre del producto en pantalla

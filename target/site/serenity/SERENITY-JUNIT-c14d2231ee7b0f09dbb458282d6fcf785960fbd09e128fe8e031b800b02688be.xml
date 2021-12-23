@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite errors="0" failures="1" name="HU-003 Buscador Haceb" skipped="0" tests="2" time="19.24" timestamp="2021-12-23 11:32:33"><testcase name="Busqueda Exitosa"/><testcase name="Busqueda Fallida"><failure message="Expected enabled element was not enabled" type="net.thucydides.core.webdriver.exceptions.ElementShouldBeEnabledException">Expected enabled element was not enabled</failure><system-err>Expected enabled element was not enabled&#13;
+task.HacebBuscar.performAs(HacebBuscar.java:22)&#13;
+stepsDefinitions.HacebFallidoExitosoStepDefinition.halleLosProductos(HacebFallidoExitosoStepDefinition.java:34)&#13;
+cucumber.runner.Runner.runPickle(Runner.java:80)&#13;
+</system-err></testcase></testsuite>

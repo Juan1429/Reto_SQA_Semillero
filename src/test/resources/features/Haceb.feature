@@ -9,8 +9,8 @@ Feature: HU-001 Buscador Haceb
     Then podre ver <NombreProducto> en pantalla
     Examples:
       |NombreProducto|
-      |Nevera Himalaya No Frost 404 Litros - Panel Digital Touch - Inox|
+      |Estufa Romero Vidrio Haceb 50 cms Gas Natural Negra|
       |Estufa de empotrar Cristal negro 60X50 cm Hierro fundido gas natural|
-      |Lavadora Digital Atlas 18 Kg Panel Trasero ONIX|
+      |Calentador de agua Bambú 10 litros Haceb de paso a gas natural tiro forzado blanco|
       |Horno mixto Masala 60 cm negro 120V gas natural Haceb|
       |Freidora de Aire sin Aceite Haceb Negra|

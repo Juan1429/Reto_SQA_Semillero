@@ -1,0 +1,5 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"HU-001 Buscador Haceb","Buscar producto","SUCCESS","2021-12-23T11:30:41.7546578-05:00[America/Bogota]","0.0","38.31"
+"HU-002 Buscador HacebBackground","Encontrar producto","SUCCESS","2021-12-23T11:34:06.3442421-05:00[America/Bogota]","0.0","15.55"
+"HU-003 Buscador Haceb","Busqueda Exitosa","SUCCESS","2021-12-23T11:32:33.2908216-05:00[America/Bogota]","0.0","8.85"
+"HU-003 Buscador Haceb","Busqueda Fallida","FAILURE","2021-12-23T11:32:42.9359287-05:00[America/Bogota]","0.0","10.4"
