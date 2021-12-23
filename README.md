@@ -518,5 +518,8 @@ Feature: HU-003 Buscador Haceb
       |Nevera Himalaya No Frost 448 Litros - Titanio|
 ```
 
+#### Imagenes del reporte
 
+![Image text](https://github.com/Juan1429/Reto_SQA_Semillero/blob/main/src/main/resources/Image%202021-12-23%20at%2012.23.29%20PM.jpeg)
+![Image text](https://github.com/Juan1429/Reto_SQA_Semillero/blob/main/src/main/resources/Image%202021-12-23%20at%2012.24.02%20PM.jpeg)
 
