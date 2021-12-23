@@ -461,7 +461,7 @@ Feature: HU-001 Buscador Haceb
 Por medio de este archivo ***.feature***  realizamos la prueba de la busqueda de los dos productos diferentes con scenario outline y utilizando background.
 
 ```
-Feature: HU-001 Buscador HacebBackground
+Feature: HU-002 Buscador HacebBackground
   Yo como usuario de Haceb
   Quiero buscar un producto en la plataforma
   Para ver el nombre del producto en pantalla
@@ -496,7 +496,7 @@ Feature: HU-001 Buscador HacebBackground
 Por medio de este archivo ***.feature***  realizamos la prueba de la busqueda de los dos productos diferentes con scenario simples.
 
 ```
-Feature: HU-001 Buscador Haceb
+Feature: HU-003 Buscador Haceb
   Yo como usuario de Haceb
   Quiero buscar un producto en la plataforma
   Para ver el nombre del producto en pantalla
