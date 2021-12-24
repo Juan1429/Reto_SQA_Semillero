@@ -2,8 +2,8 @@
 
 Se realizó tres diferentes pruebas automatizadas con ScreenPlay en la página de https://www.haceb.com las cuales son:
 
-- Realizar una busqueda de 5 productos diferentes pormedio de un scenario outline
-- Realizar una busqueda con dos scenarios los cuales tendrian una precondición utilizando un Background
+- Realizar una busqueda de 5 productos diferentes por medio de un scenario outline
+- Realizar una busqueda con dos scenarios los cuales tendrían una precondición utilizando un Background
 - Realizar una prueba fallida y una exitosa.
 
 
